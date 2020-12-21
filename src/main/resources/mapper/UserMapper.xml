@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.UserMapper">
+    <resultMap id="lisAdd" type="com.example.demo.pojo.User">
+        <id column="ID" property="id"/>
+        <result column="NAME" property="name"/>
+        <result column="INTRODUCE" property="introduce"/>
+    </resultMap>
+
+    <sql id="columns">
+        T.ID,T.NAME,T.INTRODUCE
+    </sql>
+    <insert id="insertUser">
+      INSERT INTO tb_user (ID,NAME,INTRODUCE)
+      VALUES(NULL,#{name},#{introduce});
+    </insert>
+
+
+    <select id="findListUser" resultMap="lisAdd">
+      SELECT <include refid="columns"/>
+      FROM tb_user AS T
+      <include refid="query_columns"/>
+    </select>
+
+    <sql id="query_columns">
+        <where>
+            <if test="@Ognl@isNotEmpty(id)">AND T.ID = #{id}</if>
+            <if test="@Ognl@isNotEmpty(name)">AND T.NAME = #{name}</if>
+            <if test="@Ognl@isNotEmpty(introduce)">AND T.INTRODUCE = #{introduce}</if>
+        </where>
+    </sql>
+
+
+</mapper>
