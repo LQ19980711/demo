@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +25,9 @@ public class Index {
     private UserService userService;
 
     @RequestMapping(value="/list")
-    public String getListUser(){
+    public String getListUser(HttpServletRequest request, HttpServletResponse response){
+        String userName = request.getParameter("userName");
+        System.out.println(userName);
         Map params=new HashMap();
         List<User> userList=userService.findListUser(params);
         String json=null;
