@@ -3,14 +3,12 @@ package com.example.demo.controller;
 import com.alibaba.fastjson.JSON;
 import com.example.demo.pojo.User;
 import com.example.demo.service.UserService;
-import jdk.nashorn.internal.runtime.JSONFunctions;
-import org.json.JSONObject;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.demo.service.jms.Producer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.jms.Queue;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -23,6 +21,17 @@ public class Index {
 
     @Resource
     private UserService userService;
+
+    @Autowired
+    Queue queue;
+    @Autowired
+    private Producer producer;
+
+    @RequestMapping("/rest")
+    public  String index(){
+        producer.sendMessage("123");
+        return "123";
+    }
 
     @RequestMapping(value="/list")
     public String getListUser(HttpServletRequest request, HttpServletResponse response){
@@ -51,7 +60,30 @@ public class Index {
         return json;
     }
 
-    @RequestMapping(value="/getIp")
+    /**
+     *
+     * @param session
+     * @return
+     */
+    @RequestMapping(value="/addUser")
+    public String addUser(HttpSession session){
+        User user=new User();
+        user.setName("张三");
+        user.setIntroduce("999");
+        int size=userService.addUser(user);
+        String json=null;
+        if (size>0){
+            json="{\"ers\":\"yes\",\"message\":\"新增成功\"}";
+        }else {
+            json="{\"ers\":\"no\",\"message\":\"新增失败\"}";
+        }
+        return json;
+    }
+
+
+
+
+    @RequestMapping(value="/getIp",method = RequestMethod.POST)
     public String getIp(HttpServletRequest request){
         String ip=getIpAddress(request);
         return ip;

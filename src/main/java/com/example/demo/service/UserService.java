@@ -11,4 +11,6 @@ public interface UserService {
 
     List<User> findListUser(Map params);
 
+    int addUser(User user);
+
 }

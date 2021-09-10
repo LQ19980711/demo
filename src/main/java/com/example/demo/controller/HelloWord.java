@@ -11,6 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
     @RequestMapping(value="/login.html")
     public String HelloWorld() {
-        return "/login";
+        return "/pdfHtml";
     }
 }

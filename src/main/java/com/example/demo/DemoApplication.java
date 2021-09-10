@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootApplication(scanBasePackages = "com")
 @MapperScan(basePackages = "com.example.demo.mapper")
-class DemoApplication {
+public class DemoApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
